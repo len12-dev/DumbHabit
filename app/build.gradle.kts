@@ -13,8 +13,32 @@ android {
         applicationId = "com.dumbhabit.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        // En CI, GITHUB_RUN_NUMBER croît à chaque build : une mise à jour sideload doit avoir un code plus grand.
+        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
         versionName = "0.1.0"
+    }
+
+    signingConfigs {
+        create("release") {
+            // Clé de release si fournie (secrets CI), sinon la clé debug : l'APK reste installable.
+            System.getenv("KEYSTORE_PATH")?.let { path ->
+                storeFile = file(path)
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            signingConfig = if (System.getenv("KEYSTORE_PATH") != null) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
+        }
     }
 
     buildFeatures {
