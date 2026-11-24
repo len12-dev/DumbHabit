@@ -3,6 +3,8 @@ name: Release APK
 on:
   workflow_dispatch:
   push:
+    branches:
+      - ccr-8a1b27c4-oerklq
     tags:
       - "v*"
 
