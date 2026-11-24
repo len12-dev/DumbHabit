@@ -48,7 +48,7 @@ fun SettingsScreen(vm: AppViewModel, onBack: () -> Unit) {
                     ColorMode.FOLLOW_SYSTEM to "Auto",
                 ),
                 selected = vm.colorMode,
-                onSelect = vm::setColorMode,
+                onSelect = vm::updateColorMode,
             )
         }
 

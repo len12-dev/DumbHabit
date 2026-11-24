@@ -46,7 +46,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun steps(routineId: Long): Flow<List<RoutineStep>> = dao.observeSteps(routineId)
 
-    fun setColorMode(mode: ColorMode) {
+    fun updateColorMode(mode: ColorMode) {
         colorMode = mode
         prefs.edit().putString("color", mode.name).apply()
     }
