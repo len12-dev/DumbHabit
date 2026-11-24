@@ -3,7 +3,10 @@ package com.dumbhabit.app.ui.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -65,7 +68,13 @@ fun DumbHabitTheme(mode: ColorMode, content: @Composable () -> Unit) {
         LocalContentColor provides p.ink,
     ) {
         MaterialTheme(colorScheme = scheme, typography = monoTypography()) {
-            Box(Modifier.fillMaxSize().background(p.background)) {
+            // Évite que le contenu passe sous la barre de statut et la barre de navigation (mode bord à bord).
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(p.background)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
+            ) {
                 content()
             }
         }
