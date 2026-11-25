@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.dumbhabit.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "len.studio.dumbhabit"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         // En CI, GITHUB_RUN_NUMBER croît à chaque build : une mise à jour sideload doit avoir un code plus grand.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
         versionName = "0.1.0"
