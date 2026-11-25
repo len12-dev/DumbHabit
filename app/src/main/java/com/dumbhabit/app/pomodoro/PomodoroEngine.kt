@@ -1,11 +1,20 @@
 package com.dumbhabit.app.pomodoro
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.dumbhabit.app.R
+import com.dumbhabit.app.data.formatSeconds
 import com.dumbhabit.app.reminders.Reminders
+import com.dumbhabit.app.ui.MainActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +41,10 @@ data class PomodoroState(
 object PomodoroEngine {
     private const val REQUEST_CODE = 5000
     private const val NOTIF_ID = 5001
+    private const val LIVE_ID = 5002
+    private const val LIVE_CHANNEL = "pomodoro_live"
+    private const val EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing"
+    private const val EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText"
 
     private val _state = MutableStateFlow(PomodoroState())
     val state: StateFlow<PomodoroState> = _state.asStateFlow()
@@ -40,6 +53,9 @@ object PomodoroEngine {
 
     fun init(context: Context) {
         appContext = context.applicationContext
+        val channel = NotificationChannel(LIVE_CHANNEL, "Pomodoro en cours", NotificationManager.IMPORTANCE_LOW)
+            .apply { setShowBadge(false) }
+        context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 
     fun selectPhase(phase: Phase) = update { s ->
@@ -114,7 +130,68 @@ object PomodoroEngine {
     }
 
     private fun update(block: (PomodoroState) -> PomodoroState) {
-        _state.value = block(_state.value)
+        val before = _state.value
+        val after = block(before)
+        _state.value = after
+        // Mise à jour de la notification seulement quand l'état d'exécution change (pas à chaque tick).
+        if (before.running != after.running || before.phase != after.phase ||
+            (!after.running && before.remainingMs != after.remainingMs)
+        ) {
+            renderLive(after)
+        }
+    }
+
+    /** Notification en direct : compte à rebours natif, texte court dans la barre d'état. */
+    @SuppressLint("MissingPermission")
+    private fun renderLive(s: PomodoroState) {
+        val ctx = appContext ?: return
+        val manager = NotificationManagerCompat.from(ctx)
+        val paused = !s.running && s.remainingMs < s.phaseSec * 1000L
+        if (!s.running && !paused) {
+            manager.cancel(LIVE_ID)
+            return
+        }
+        if (!Reminders.canNotify(ctx)) return
+
+        val open = PendingIntent.getActivity(
+            ctx,
+            0,
+            Intent(ctx, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val title = if (s.phase == Phase.WORK) "Pomodoro · Travail" else "Pomodoro · Pause"
+        val builder = NotificationCompat.Builder(ctx, LIVE_CHANNEL)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentIntent(open)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        val shortText: String
+        if (s.running) {
+            val leftSec = ((s.endAt - System.currentTimeMillis()) + 999L).coerceAtLeast(0L) / 1000L
+            builder
+                .setContentText("Cycles terminés : ${s.completedWork}")
+                .setUsesChronometer(true)
+                .setChronometerCountDown(true)
+                .setWhen(s.endAt)
+            shortText = formatSeconds(leftSec)
+        } else {
+            val leftSec = (s.remainingMs + 999L) / 1000L
+            builder
+                .setContentText("En pause · ${formatSeconds(leftSec)}")
+                .setShowWhen(false)
+            shortText = formatSeconds(leftSec)
+        }
+
+        // Mêmes extras que la routine : statut « en direct » et texte court (absents de androidx.core 1.16).
+        builder.addExtras(Bundle().apply {
+            putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true)
+            putString(EXTRA_SHORT_CRITICAL_TEXT, shortText)
+        })
+
+        manager.notify(LIVE_ID, builder.build())
     }
 
     private fun alarmManager(ctx: Context): AlarmManager =
