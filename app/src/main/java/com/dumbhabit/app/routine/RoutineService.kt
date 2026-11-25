@@ -85,9 +85,11 @@ class RoutineService : Service() {
             .setProgress(total, state.index, false)
             .setUsesChronometer(true)
             // Notification en direct : affichée en priorité dans la barre d'état (chip) et l'écran verrouillé.
-            .setShortCriticalText("${state.index + 1}/$total")
-            // Équivalent de Notification.EXTRA_REQUEST_PROMOTED_ONGOING (absent de androidx.core 1.16).
-            .addExtras(Bundle().apply { putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true) })
+            // Absents de androidx.core 1.16 : on passe par les extras du framework.
+            .addExtras(Bundle().apply {
+                putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true)
+                putString(EXTRA_SHORT_CRITICAL_TEXT, "${state.index + 1}/$total")
+            })
 
         val duration = step.durationSeconds
         if (duration != null) {
@@ -138,6 +140,7 @@ class RoutineService : Service() {
         const val ACTION_STOP = "com.dumbhabit.app.routine.STOP"
 
         private const val EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing"
+        private const val EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText"
         private const val CHANNEL_ID = "routine_live"
         private const val NOTIF_ID = 4001
         private const val DONE_ID = 4002
