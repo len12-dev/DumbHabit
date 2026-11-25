@@ -10,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.dumbhabit.app"
+        applicationId = "len.studio.dumbhabit"
         minSdk = 26
         targetSdk = 35
         // En CI, GITHUB_RUN_NUMBER croît à chaque build : une mise à jour sideload doit avoir un code plus grand.
