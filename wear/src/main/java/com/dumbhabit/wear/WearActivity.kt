@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,7 +35,6 @@ import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Colors
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.ScreenScaffold
 import androidx.wear.compose.material.Text
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataEvent
@@ -107,13 +107,14 @@ fun WearApp() {
     val context = LocalContext.current
     val listState = rememberScalingLazyListState()
 
-    ScreenScaffold(scrollState = listState) { contentPadding ->
-        ScalingLazyColumn(
-            state = listState,
-            contentPadding = contentPadding,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
+    // Marges généreuses : le contenu reste dans le disque de l'écran rond.
+    ScalingLazyColumn(
+        state = listState,
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 28.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        run {
             item {
                 Header()
             }
