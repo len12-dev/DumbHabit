@@ -83,6 +83,9 @@ class RoutineService : Service() {
             .setContentText(step.name)
             .setProgress(total, state.index, false)
             .setUsesChronometer(true)
+            // Notification en direct : affichée en priorité dans la barre d'état (chip) et l'écran verrouillé.
+            .setRequestPromotedOngoing(true)
+            .setShortCriticalText("${state.index + 1}/$total")
 
         val duration = step.durationSeconds
         if (duration != null) {
