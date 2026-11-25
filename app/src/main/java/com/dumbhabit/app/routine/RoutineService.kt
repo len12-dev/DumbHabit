@@ -13,6 +13,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.dumbhabit.app.R
 import com.dumbhabit.app.reminders.Reminders
 import com.dumbhabit.app.ui.MainActivity
 
@@ -63,7 +64,7 @@ class RoutineService : Service() {
 
     private fun buildNotification(state: RunState?): Notification {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_media_play)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(openApp())
             .setOngoing(true)
             .setOnlyAlertOnce(true)
@@ -108,7 +109,7 @@ class RoutineService : Service() {
     private fun postDone(state: RunState) {
         if (!Reminders.canNotify(this)) return
         val done = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_menu_agenda)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Routine terminée")
             .setContentText("${state.routineName} · ${state.results.size} étapes")
             .setContentIntent(openApp())

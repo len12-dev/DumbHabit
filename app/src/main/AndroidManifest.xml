@@ -10,7 +10,7 @@
     <application
         android:name=".DumbHabitApp"
         android:label="DumbHabit"
-        android:icon="@android:drawable/sym_def_app_icon"
+        android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
 
