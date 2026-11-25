@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dumbhabit.app.ui.screens.HabitsScreen
 import com.dumbhabit.app.ui.screens.HomeScreen
+import com.dumbhabit.app.ui.screens.PomodoroScreen
 import com.dumbhabit.app.ui.screens.RoutineEditScreen
 import com.dumbhabit.app.ui.screens.RoutineRunScreen
 import com.dumbhabit.app.ui.screens.RoutinesScreen
@@ -24,8 +25,12 @@ fun AppNav(vm: AppViewModel) {
                 onHabits = { nav.navigate("habits") },
                 onRoutines = { nav.navigate("routines") },
                 onSettings = { nav.navigate("settings") },
+                onPomodoro = { nav.navigate("pomodoro") },
                 onRunStarted = { nav.navigate("run") },
             )
+        }
+        composable("pomodoro") {
+            PomodoroScreen(onBack = { nav.popBackStack() })
         }
         composable("habits") {
             HabitsScreen(vm = vm, onBack = { nav.popBackStack() })

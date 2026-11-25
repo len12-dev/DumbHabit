@@ -3,6 +3,7 @@ package com.dumbhabit.app
 import android.app.Application
 import android.content.Context
 import com.dumbhabit.app.data.AppDatabase
+import com.dumbhabit.app.pomodoro.PomodoroEngine
 import com.dumbhabit.app.reminders.Reminders
 import com.dumbhabit.app.routine.RoutineEngine
 
@@ -14,6 +15,7 @@ class DumbHabitApp : Application() {
         super.onCreate()
         Reminders.createChannels(this)
         RoutineEngine.init(db.dao())
+        PomodoroEngine.init(this)
     }
 }
 

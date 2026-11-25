@@ -43,6 +43,7 @@ fun HomeScreen(
     onHabits: () -> Unit,
     onRoutines: () -> Unit,
     onSettings: () -> Unit,
+    onPomodoro: () -> Unit,
     onRunStarted: () -> Unit,
 ) {
     val p = pixel()
@@ -172,6 +173,7 @@ fun HomeScreen(
             PixelNavItem(label = "Réglages", onClick = onSettings)
             PixelNavItem(label = "Habitudes", onClick = onHabits)
             PixelNavItem(label = "Routines", onClick = onRoutines)
+            PixelNavItem(label = "Pomodoro", onClick = onPomodoro)
         }
     }
 }

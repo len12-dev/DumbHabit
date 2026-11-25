@@ -216,10 +216,10 @@ fun PixelNavItem(label: String, onClick: () -> Unit, modifier: Modifier = Modifi
     ) {
         Text(
             label.uppercase(),
-            style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 2.sp),
+            style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 1.sp),
         )
         Spacer(Modifier.height(6.dp))
-        Box(Modifier.width(64.dp).height(6.dp).background(p.ink))
+        Box(Modifier.width(56.dp).height(6.dp).background(p.ink))
     }
 }
 
