@@ -114,6 +114,9 @@ abstract class AppDao {
     @Query("DELETE FROM habit_logs WHERE habitId = :habitId AND date = :date")
     abstract suspend fun deleteHabitLog(habitId: Long, date: String)
 
+    @Query("SELECT * FROM habit_logs WHERE habitId = :habitId AND date = :date")
+    abstract suspend fun getHabitLog(habitId: Long, date: String): HabitLog?
+
     // ---- Routines --------------------------------------------------------
 
     @Query("SELECT * FROM routines ORDER BY position, id")

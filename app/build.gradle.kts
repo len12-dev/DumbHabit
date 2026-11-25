@@ -68,4 +68,7 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
+    // Synchronisation avec la montre Wear OS (Data Layer).
+    implementation("com.google.android.gms:play-services-wearable:18.2.0")
 }

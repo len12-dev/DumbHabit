@@ -12,7 +12,11 @@ import com.dumbhabit.app.data.HabitLog
 import com.dumbhabit.app.data.Routine
 import com.dumbhabit.app.data.RoutineLog
 import com.dumbhabit.app.data.RoutineStep
+import com.dumbhabit.app.data.isActiveOn
 import com.dumbhabit.app.data.todayIso
+import com.dumbhabit.app.wear.WearSync
+import java.time.LocalDate
+import kotlinx.coroutines.flow.combine
 import com.dumbhabit.app.dumbApp
 import com.dumbhabit.app.reminders.Reminders
 import com.dumbhabit.app.routine.RoutineEngine
@@ -43,6 +47,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     var colorMode by mutableStateOf(readColorMode())
         private set
+
+    init {
+        // Publie l'état vers la montre à chaque changement d'habitudes, de coches ou de routine.
+        viewModelScope.launch {
+            combine(habits, habitLogs, RoutineEngine.state) { h, l, r -> Triple(h, l, r) }.collect { (h, l, r) ->
+                val active = h.filter { isActiveOn(it.daysMask, LocalDate.now()) }
+                WearSync.publish(ctx, active, l.map { it.habitId }.toSet(), r)
+            }
+        }
+    }
 
     fun steps(routineId: Long): Flow<List<RoutineStep>> = dao.observeSteps(routineId)
 

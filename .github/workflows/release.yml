@@ -46,13 +46,14 @@ jobs:
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
             export KEYSTORE_PATH="$RUNNER_TEMP/release.jks"
           fi
-          gradle :app:assembleRelease :app:bundleRelease --no-daemon
+          gradle :app:assembleRelease :app:bundleRelease :wear:assembleRelease --no-daemon
 
       - name: Collect release files
         run: |
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/DumbHabit-${GITHUB_REF_NAME}.apk"
           cp app/build/outputs/bundle/release/app-release.aab "dist/DumbHabit-${GITHUB_REF_NAME}.aab"
+          cp wear/build/outputs/apk/release/wear-release.apk "dist/DumbHabit-wear-${GITHUB_REF_NAME}.apk"
 
       - uses: actions/upload-artifact@v4
         with:
