@@ -9,20 +9,17 @@ Habitudes, routines chronométrées et Pomodoro, sans compte ni publicité.
 ## Description complète (4 000 caractères max)
 DumbHabit est une application simple pour suivre tes habitudes, enchaîner tes routines et travailler par cycles.
 
-**Habitudes**
-Coche chaque jour tes habitudes, choisis les jours où elles comptent et ajoute un rappel quotidien.
+Habitudes : Chaque jour, coche tes habitudes, choisis les jours où elles comptent et ajoute un rappel quotidien.
 
-**Routines chronométrées**
-Crée une routine en plusieurs étapes, par exemple « Lever » : se brosser les dents (2:00), se coiffer, prendre son petit-déjeuner. Chaque étape peut avoir un minuteur ou un simple chronomètre.
+Routines : Tu en as marre de sauter une étape tous les matins car tu n'y penses pas ? Utilise les routines ! Tu peux y mettre un nombre d'éléments illimité et tu peux même mettre un chronomètre ! Par exemple tu peux créer une étape « Se brosser les dents » et indiquer deux minutes dans l'application pour qu'elle t'affiche lorsque c'est fini !
 
 Pendant la routine, une notification en direct affiche l'étape en cours et le temps restant, avec deux boutons :
 • Valider : l'étape est faite, on passe à la suivante.
 • Passer : on saute l'étape.
 
-**Pomodoro**
-Un minuteur par cycles de travail et de pause. Règle la durée au clavier (par exemple 25:00), démarre, mets en pause ou réinitialise. Une notification te prévient à chaque fin de phase.
+Pomodoro : Un minuteur par cycles de travail et de pause. Règle la durée au clavier (par exemple 25:00), démarre, mets en pause ou réinitialise. Une notification te prévient à chaque fin de phase.
 
-**Simple et privé**
+Simple et privé
 • Aucun compte, aucune publicité, aucun achat intégré.
 • Tes données restent sur ton téléphone.
 • Thème clair, sombre ou automatique.
