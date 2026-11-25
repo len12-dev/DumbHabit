@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -84,8 +85,9 @@ class RoutineService : Service() {
             .setProgress(total, state.index, false)
             .setUsesChronometer(true)
             // Notification en direct : affichée en priorité dans la barre d'état (chip) et l'écran verrouillé.
-            .setRequestPromotedOngoing(true)
             .setShortCriticalText("${state.index + 1}/$total")
+            // Équivalent de Notification.EXTRA_REQUEST_PROMOTED_ONGOING (absent de androidx.core 1.16).
+            .addExtras(Bundle().apply { putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true) })
 
         val duration = step.durationSeconds
         if (duration != null) {
@@ -135,6 +137,7 @@ class RoutineService : Service() {
         const val ACTION_SKIP = "com.dumbhabit.app.routine.SKIP"
         const val ACTION_STOP = "com.dumbhabit.app.routine.STOP"
 
+        private const val EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing"
         private const val CHANNEL_ID = "routine_live"
         private const val NOTIF_ID = 4001
         private const val DONE_ID = 4002
