@@ -15,7 +15,7 @@ android {
         targetSdk = 36
         // En CI, GITHUB_RUN_NUMBER croît à chaque build : une mise à jour sideload doit avoir un code plus grand.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "0.1.0"
+        versionName = "0.1.1"
     }
 
     signingConfigs {
@@ -71,4 +71,5 @@ dependencies {
 
     // Synchronisation avec la montre Wear OS (Data Layer).
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
+    implementation("androidx.wear:wear-remote-interactions:1.1.0")
 }

@@ -14,6 +14,7 @@ import com.dumbhabit.app.data.RoutineLog
 import com.dumbhabit.app.data.RoutineStep
 import com.dumbhabit.app.data.isActiveOn
 import com.dumbhabit.app.data.todayIso
+import com.dumbhabit.app.wear.WatchLauncher
 import com.dumbhabit.app.wear.WearSync
 import java.time.LocalDate
 import kotlinx.coroutines.flow.combine
@@ -117,6 +118,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             val steps = dao.getSteps(routine.id)
             if (RoutineEngine.start(routine, steps)) {
                 RoutineService.send(ctx, RoutineService.ACTION_START)
+                WatchLauncher.openWatchApp(ctx)
                 onStarted()
             }
         }

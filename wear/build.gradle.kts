@@ -14,7 +14,7 @@ android {
         minSdk = 30
         targetSdk = 36
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "0.1.0"
+        versionName = "0.1.1"
     }
 
     signingConfigs {
@@ -57,6 +57,9 @@ dependencies {
     // Compose for Wear OS
     implementation("androidx.wear.compose:compose-material:1.4.0")
     implementation("androidx.wear.compose:compose-foundation:1.4.0")
+    // Activité en cours (Ongoing Activity) sur la montre.
+    implementation("androidx.wear:wear-ongoing:1.0.0")
+    implementation("androidx.core:core-ktx:1.16.0")
 
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
