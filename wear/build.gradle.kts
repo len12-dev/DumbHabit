@@ -13,7 +13,7 @@ android {
         applicationId = "len.studio.dumbhabit"
         minSdk = 30
         targetSdk = 36
-        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1) * 10 + 1
         versionName = "0.1.1"
     }
 

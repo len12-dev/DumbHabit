@@ -14,7 +14,7 @@ android {
         minSdk = 26
         targetSdk = 36
         // En CI, GITHUB_RUN_NUMBER croît à chaque build : une mise à jour sideload doit avoir un code plus grand.
-        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1) * 10
         versionName = "0.1.1"
     }
 
